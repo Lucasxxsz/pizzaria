@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 58" fill="none">
+
+  <!-- MARCA: roda de pizza estilizada -->
+
+  <!-- Círculo externo -->
+  <circle cx="29" cy="29" r="26" stroke="#1a1a1a" stroke-width="2"/>
+
+  <!-- Fatias (linhas de corte) -->
+  <line x1="29" y1="3"  x2="29" y2="55" stroke="#1a1a1a" stroke-width="1.2" opacity=".25"/>
+  <line x1="3"  y1="29" x2="55" y2="29" stroke="#1a1a1a" stroke-width="1.2" opacity=".25"/>
+  <line x1="10" y1="10" x2="48" y2="48" stroke="#1a1a1a" stroke-width="1.2" opacity=".25"/>
+  <line x1="48" y1="10" x2="10" y2="48" stroke="#1a1a1a" stroke-width="1.2" opacity=".25"/>
+
+  <!-- Círculo interno (borda da massa) -->
+  <circle cx="29" cy="29" r="18" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- Molho (círculo preenchido central) -->
+  <circle cx="29" cy="29" r="12" fill="#C0572A"/>
+
+  <!-- Letra F no centro (Forneria) -->
+  <text x="29" y="34"
+    font-family="Georgia, serif"
+    font-size="13"
+    font-weight="700"
+    text-anchor="middle"
+    fill="#ffffff"
+    letter-spacing="0">F</text>
+
+  <!-- Divisor vertical -->
+  <line x1="67" y1="8" x2="67" y2="50" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- FORNERIA -->
+  <text x="78" y="27"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="16.5"
+    font-weight="700"
+    letter-spacing="5"
+    fill="currentColor">FORNERIA</text>
+
+  <!-- Linha fina separadora -->
+  <line x1="78" y1="33" x2="226" y2="33" stroke="#e5e7eb" stroke-width=".8"/>
+
+  <!-- Napoli -->
+  <text x="80" y="46"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="12"
+    font-style="italic"
+    letter-spacing="6"
+    fill="#C0572A">Napoli</text>
+
+</svg>
