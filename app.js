@@ -1,4 +1,4 @@
-const WHATSAPP = '5511999999999'; // ← troque pelo número real
+const WHATSAPP = '5516991231158';
 
 // ===== DADOS DO CARDÁPIO =====
 const pizzas = [
@@ -140,20 +140,42 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
 document.getElementById('checkoutForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
-  const nome  = document.getElementById('ckNome').value.trim();
-  const tel   = document.getElementById('ckTel').value.trim();
-  const end   = document.getElementById('ckEnd').value.trim();
-  const pgto  = document.querySelector('input[name="pgto"]:checked')?.value || '';
+  const nome   = document.getElementById('ckNome').value.trim();
+  const tel    = document.getElementById('ckTel').value.trim();
+  const end    = document.getElementById('ckEnd').value.trim();
+  const num    = document.getElementById('ckNum').value.trim();
+  const comp   = document.getElementById('ckComp').value.trim();
+  const bairro = document.getElementById('ckBairro').value.trim();
+  const pgto   = document.querySelector('input[name="pgto"]:checked')?.value || '';
+  const precisaTroco = document.querySelector('input[name="troco"]:checked')?.value === 'sim';
   const troco = document.getElementById('ckTroco').value.trim();
   const obs   = document.getElementById('ckObs').value.trim();
 
   if (!nome || !tel || !pgto) { showToast('Preencha nome, telefone e pagamento.'); return; }
 
   const total  = cartTotal();
-  const entrega = end ? `📍 Entrega: ${end}` : '🏪 Retirada no local';
+  const endCompleto = [end, num, comp, bairro].filter(Boolean).join(', ');
+  const entrega = endCompleto ? `📍 Entrega: ${endCompleto}` : '🏪 Retirada no local';
   const frete   = total >= 60 ? 'Entrega grátis ✅' : 'Taxa de entrega a combinar';
   const itens   = cart.map(i => `  • ${i.qty}× ${i.nome} (${i.tamanho}) — R$ ${(i.preco * i.qty).toFixed(0)}`).join('\n');
-  const trocoLine = pgto === 'Dinheiro' ? (troco ? `💵 *Troco para:* ${troco}` : '💵 *Troco:* Não precisa') : '';
+  let trocoLine = '';
+  if (pgto === 'Dinheiro') {
+    if (precisaTroco && troco) {
+      const trocoValor = parseFloat(troco.replace(/[R$\s.]/g, '').replace(',', '.'));
+      if (!isNaN(trocoValor) && trocoValor > total) {
+        const devolver = (trocoValor - total).toFixed(2).replace('.', ',');
+        trocoLine = `💵 *Troco para:* R$ ${trocoValor.toFixed(2).replace('.', ',')} → *Devolver: R$ ${devolver}*`;
+      } else if (!isNaN(trocoValor)) {
+        trocoLine = `💵 *Troco para:* R$ ${trocoValor.toFixed(2).replace('.', ',')} ⚠️ Valor menor ou igual ao total`;
+      } else {
+        trocoLine = `💵 *Troco para:* ${troco}`;
+      }
+    } else if (precisaTroco) {
+      trocoLine = '💵 *Troco:* Sim (valor a combinar)';
+    } else {
+      trocoLine = '💵 *Troco:* Não precisa';
+    }
+  }
 
   const msg = [
     '🍕 *Novo Pedido — Forneria Napoli*',
@@ -189,8 +211,21 @@ document.getElementById('checkoutForm').addEventListener('submit', function(e) {
 document.querySelectorAll('input[name="pgto"]').forEach(r => {
   r.addEventListener('change', () => {
     const trocoGroup = document.getElementById('trocoGroup');
-    trocoGroup.style.display = r.value === 'Dinheiro' && r.checked ? 'block' : 'none';
-    if (r.value !== 'Dinheiro') document.getElementById('ckTroco').value = '';
+    const show = r.value === 'Dinheiro' && r.checked;
+    trocoGroup.style.display = show ? 'block' : 'none';
+    if (!show) {
+      document.getElementById('ckTroco').value = '';
+      document.getElementById('trocoValorGroup').style.display = 'none';
+      document.querySelector('input[name="troco"][value="nao"]').checked = true;
+    }
+  });
+});
+
+document.querySelectorAll('input[name="troco"]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.getElementById('trocoValorGroup').style.display =
+      r.value === 'sim' ? 'block' : 'none';
+    if (r.value === 'nao') document.getElementById('ckTroco').value = '';
   });
 });
 

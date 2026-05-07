@@ -347,6 +347,7 @@ a { text-decoration: none; color: inherit; }
 .stat span   { font-size: .82rem; color: var(--gray); }
 
 .form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-group label { font-size: .85rem; font-weight: 600; color: #374151; }
 .form-group input,
 .form-group select,
@@ -854,6 +855,37 @@ a { text-decoration: none; color: inherit; }
 .pgto-opt:has(input:checked)::after {
   opacity: 1;
   transform: scale(1);
+}
+
+/* ===== TROCO ===== */
+.troco-opts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 6px;
+}
+.troco-opt { position: relative; }
+.troco-opt input[type="radio"] { display: none; }
+.troco-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 10px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-size: .85rem;
+  font-weight: 500;
+  color: var(--gray);
+  cursor: pointer;
+  transition: border-color .2s, background .2s, color .2s;
+  text-align: center;
+}
+.troco-card:hover { border-color: var(--red); color: var(--red); }
+.troco-opt input:checked + .troco-card {
+  border-color: var(--red);
+  background: var(--red-soft);
+  color: var(--red);
+  font-weight: 600;
 }
 
 /* ===== COMO FUNCIONA ===== */
