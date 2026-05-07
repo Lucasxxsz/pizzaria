@@ -26,7 +26,9 @@ const pizzas = [
 ];
 
 // ===== CARRINHO =====
-let cart = [];
+let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); }
 
 function cartKey(id, tamanho) { return `${id}__${tamanho}`; }
 
@@ -37,6 +39,7 @@ function addToCart(id, tamanho) {
   const existing = cart.find(i => i.key === key);
   if (existing) { existing.qty++; }
   else { cart.push({ key, id, nome: pizza.nome, tamanho, preco: pizza.precos[tamanho], img: pizza.img, qty: 1 }); }
+  saveCart();
   updateCartUI();
   openCart();
   showToast(`${pizza.nome} (${tamanho}) adicionada ao carrinho`);
@@ -47,11 +50,13 @@ function changeQty(key, delta) {
   if (!item) return;
   item.qty += delta;
   if (item.qty <= 0) cart = cart.filter(i => i.key !== key);
+  saveCart();
   updateCartUI();
 }
 
 function removeItem(key) {
   cart = cart.filter(i => i.key !== key);
+  saveCart();
   updateCartUI();
 }
 
@@ -200,6 +205,7 @@ document.getElementById('checkoutForm').addEventListener('submit', function(e) {
 
   closeModal();
   cart = [];
+  saveCart();
   updateCartUI();
   this.reset();
   document.querySelectorAll('input[name="pgto"]').forEach(r => r.checked = false);
